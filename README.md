@@ -1,4 +1,5 @@
-Automated tests for Demoblaze using Java, Selenium, TestNG
+Automated tests for Demoblaze using Java, Selenium, TestNG.
+
 Enhanced system reliability by testing user flows (signup, purchasing, cart ops)
 
 Two Scenarios were created:
