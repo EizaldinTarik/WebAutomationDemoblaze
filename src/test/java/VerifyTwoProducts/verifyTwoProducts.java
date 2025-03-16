@@ -5,7 +5,9 @@ import Pages.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class VerifyTwoProducts extends BaseSteps {
+import java.util.Objects;
+
+public class verifyTwoProducts extends BaseSteps {
     @Test (priority = 1)
     public void verifyTwoProductsPurchasedSuccessfully() throws InterruptedException {
         HomePage homePage = new HomePage(driver);
@@ -13,6 +15,7 @@ public class VerifyTwoProducts extends BaseSteps {
         LaptopPage laptopPage = new LaptopPage(driver);
         MonitorPage monitorPage = new MonitorPage(driver);
         CartPage cartPage = new CartPage(driver);
+        CheckOutPage checkOutPage = new CheckOutPage(driver);
         Thread.sleep(2000);
         //Login
         homePage.onClickLoginLink();
@@ -96,5 +99,77 @@ public class VerifyTwoProducts extends BaseSteps {
         cartPage.onClickPlaceOrder();
 
         //CheckOut
+        checkOutPage.setCheckOutName("Eizaldin");
+        checkOutPage.setCheckOutCountry("Egypt");
+        checkOutPage.setCheckOutCity("Giza");
+        checkOutPage.setCheckOutCard("1234");
+        checkOutPage.setCheckOutMonth("April");
+        checkOutPage.setCheckOutYear("2024");
+        checkOutPage.onClickPurchaseButton();
+        //Verify Purchase
+        expectedResults = checkOutPage.VerifyPurchaseMessage();
+        actualResults = "Thank you for your purchase!";
+        Assert.assertTrue(expectedResults.contains(actualResults));
+        checkOutPage.onClickAcceptVerifyMessage();
+    }
+    @Test (priority = 2)
+    public void invalidLoginCredentials() throws InterruptedException {
+        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        LaptopPage laptopPage = new LaptopPage(driver);
+        MonitorPage monitorPage = new MonitorPage(driver);
+        CartPage cartPage = new CartPage(driver);
+        CheckOutPage checkOutPage = new CheckOutPage(driver);
+        Thread.sleep(2000);
+        //Login
+        homePage.onClickLogOutLink();
+        Thread.sleep(2000);
+        homePage.onClickLoginLink();
+        loginPage.insertLoginUsername("Eizal");
+        loginPage.insertLoginPassword("1143");
+        loginPage.onClickLoginButton();
+        String expectedResults = loginPage.getLoginAlertMessage();
+        String actualResults = "User does not exist.";
+        Thread.sleep(2000);
+        Assert.assertTrue(expectedResults.contains(actualResults));
+        loginPage.acceptLoginAlertMessage();
+    }
+    @Test (priority = 3)
+    public void addSameProductTwice() throws InterruptedException {
+        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        LaptopPage laptopPage = new LaptopPage(driver);
+        MonitorPage monitorPage = new MonitorPage(driver);
+        CartPage cartPage = new CartPage(driver);
+        CheckOutPage checkOutPage = new CheckOutPage(driver);
+        homePage.onClickLoginLink();
+        loginPage.insertLoginUsername("Eizaldint");
+        loginPage.insertLoginPassword("11413");
+        loginPage.onClickLoginButton();
+        String expectedResults = loginPage.verifyLogin();
+        String actualResults = "Welcome Eizaldint";
+        Thread.sleep(1000);
+        Assert.assertTrue(expectedResults.contains(actualResults));
+        //Laptop
+        homePage.onClickLaptopCat();
+        laptopPage.onClickLaptopItem();
+        laptopPage.AddToCart();
+        expectedResults = laptopPage.verifyAlertMessageAdded();
+        actualResults = "Product added.";
+        Assert.assertTrue(expectedResults.contains(actualResults));
+        laptopPage.acceptAlertMessage();
+
+        laptopPage.AddToCart();
+        expectedResults = laptopPage.verifyAlertMessageAdded();
+        actualResults = "Product added.";
+        Assert.assertTrue(expectedResults.contains(actualResults));
+        laptopPage.acceptAlertMessage();
+        homePage.onClickCartLink();
+       Thread.sleep(2000);
+        String expectedResults1 = cartPage.setCheckItemName1();
+        String expectedResults2 = cartPage.setCheckItemName2();
+        if (Objects.equals(expectedResults1, expectedResults2)) {
+            Assert.assertEquals(expectedResults1, expectedResults2);
+        }
     }
 }

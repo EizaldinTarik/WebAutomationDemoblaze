@@ -32,4 +32,25 @@ public class SignUp extends BaseSteps {
         Thread.sleep(2000);
         signUpPage.acceptSignUpAlertMessage();
     }
+
+    @Test (priority = 2)
+    public void invalidSignUpTest() throws InterruptedException {
+        HomePage homePage = new HomePage(driver);
+        SignUpPage signUpPage = new SignUpPage(driver);
+        homePage.onClickSignUpLink();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        signUpPage.insertUsername("Eizaldint");
+        signUpPage.insertPassword("11413");
+        signUpPage.onClickRegisterButton();
+        Thread.sleep(2000);
+        String actualResults = signUpPage.getSignUpAlertMessage();
+        String expectedResults = "This user already exist.";
+        Assert.assertTrue(actualResults.contains(expectedResults));
+        Thread.sleep(2000);
+        signUpPage.acceptSignUpAlertMessage();
+    }
 }

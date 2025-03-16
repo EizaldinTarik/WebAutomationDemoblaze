@@ -13,6 +13,7 @@ public class LoginPage {
     private By loginPasswordBox = By.id("loginpassword");
     private By loginButton = By.xpath("//button[@onclick = \"logIn()\"]");
     private By verifyLogin = By.id("nameofuser");
+    private By closeButton = By.cssSelector(".btn.btn-secondary");
     //Actions
     public void insertLoginUsername(String username) {
         driver.findElement(loginUsernameBox).sendKeys(username);
@@ -26,9 +27,20 @@ public class LoginPage {
     }
     public String verifyLogin() {
         String text = driver.findElement(verifyLogin).getText();
-        System.out.println(text);
         return text;
+    }
 
+    public String getLoginAlertMessage() {
+        String text = driver.switchTo().alert().getText();
+        return text;
+    }
+
+    public void acceptLoginAlertMessage() throws InterruptedException {
+        driver.switchTo().alert().dismiss();
+    }
+
+    public void onclickCloseButton() {
+        driver.findElement(closeButton).click();
     }
 
 }

@@ -19,6 +19,8 @@ public class HomePage {
     private By laptopsCatLink = By.xpath("//a[@onclick = \"byCat('notebook')\"]");
     private By monitorsCatLink = By.xpath("//a[@onclick = \"byCat('monitor')\"]");
     private By cartLink = By.id("cartur");
+    private By logoutLink = By.id("logout2");
+
 
     //Actions
     public void onClickSignUpLink() throws InterruptedException {
@@ -43,6 +45,8 @@ public class HomePage {
         Thread.sleep(1000);
         return new CartPage(driver);
     }
-
+    public void onClickLogOutLink() {
+        driver.findElement(logoutLink).click();
+    }
 
 }

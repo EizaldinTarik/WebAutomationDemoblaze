@@ -32,7 +32,9 @@ public class CartPage {
     public String setTotalPrice() {
         return driver.findElement(totalPrice).getText();
     }
-    public void onClickPlaceOrder() {
+    public CheckOutPage onClickPlaceOrder() throws InterruptedException {
         driver.findElement(placeOrder).click();
+        Thread.sleep(2000);
+        return new CheckOutPage(driver);
     }
 }

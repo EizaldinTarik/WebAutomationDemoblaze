@@ -27,7 +27,8 @@ public class SignUpPage {
         String text = driver.switchTo().alert().getText();
         return text;
     }
-    public void acceptSignUpAlertMessage() {
+    public void acceptSignUpAlertMessage() throws InterruptedException {
         driver.switchTo().alert().dismiss();
     }
+
 }

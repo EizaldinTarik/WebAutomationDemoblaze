@@ -30,6 +30,6 @@ public class BaseSteps {
 
     @AfterClass
     public void closeBrowser() {
-        //driver.quit();
+        driver.quit();
     }
 }
